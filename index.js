@@ -1,9 +1,10 @@
 const newPost = document.getElementById("new-post")
-let postsArray =[]
+
+let postsArray = []
 
 const renderPosts = () => {
     let html = ""
-    for (let post of postsArr) {
+    for (let post of postsArray) {
         html += `
             <h3>${post.title}</h3>
             <p>${post.body}</p>
@@ -13,26 +14,26 @@ const renderPosts = () => {
     document.getElementById("blog-list").innerHTML = html
 }
 
-
-
-
-fetch("https://apis.scrimba.com/jsonplaceholder/posts", {method: "GET"})
+// GET initial posts
+fetch("https://apis.scrimba.com/jsonplaceholder/posts", { method: "GET" })
     .then(resource => resource.json())
     .then(data => {
-        const postsArr = data.slice(0, 5)
+        postsArray = data.slice(0, 5)   // store in global array
         renderPosts()
     })
 
 
-newPost.addEventListener("submit", (event)=>{
-    event.preventDefault();
-    let postTitle = document.getElementById("post-title").value
-    let postBody = document.getElementById("post-body").value
+// POST a new post
+newPost.addEventListener("submit", event => {
+    event.preventDefault()
+
+    const postTitle = document.getElementById("post-title").value
+    const postBody = document.getElementById("post-body").value
+
     const data = {
         title: postTitle,
         body: postBody
     }
-    console.log(data)
 
     fetch("https://apis.scrimba.com/jsonplaceholder/posts", {
         method: "POST",
@@ -42,11 +43,16 @@ newPost.addEventListener("submit", (event)=>{
         body: JSON.stringify(data)
     })
         .then(response => response.json())
-        .then(post => console.log("Created:", post))
+        .then(post => {
+            console.log("Created:", post)
+
+            // Add new post to the TOP of the list
             postsArray.unshift(post)
+
             renderPosts()
+
+            // Clear inputs
             document.getElementById("post-title").value = ""
             document.getElementById("post-body").value = ""
-            
-    
+        })
 })

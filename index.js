@@ -16,7 +16,6 @@ fetch("https://apis.scrimba.com/jsonplaceholder/posts", {method: "GET"})
     })
 
 
-
 newPost.addEventListener("submit", (event)=>{
     event.preventDefault();
     let postTitle = document.getElementById("post-title").value
@@ -26,4 +25,18 @@ newPost.addEventListener("submit", (event)=>{
         body: postBody
     }
     console.log(data)
+
+    fetch("https://apis.scrimba.com/jsonplaceholder/posts", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            title: postTitle,
+            body: postBody 
+        })
+    })
+        .then(response => response.json())
+        .then(data => console.log("Created:", data))
+
 })

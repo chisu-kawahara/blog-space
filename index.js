@@ -31,10 +31,7 @@ newPost.addEventListener("submit", (event)=>{
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            title: postTitle,
-            body: postBody 
-        })
+        body: JSON.stringify(data)
     })
         .then(response => response.json())
         .then(data => console.log("Created:", data))
